@@ -27,4 +27,4 @@ The system is built from a network of identical or specialized processing units 
 ## Getting Started
 
 This repository contains the SystemVerilog source code, example implementations targeting the I2S protocol, and testbenches for verification.
-The modules are compatible with [basics-graphics-music] (https://github.com/yuri-panchul/basics-graphics-music).
+The modules are compatible with [basics-graphics-music](https://github.com/yuri-panchul/basics-graphics-music).
