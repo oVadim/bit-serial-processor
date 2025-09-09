@@ -83,12 +83,17 @@
 83.		11010000010	-(0+2)-5
 
 table mix decoding
-11101000011
-123456789AB
-1 is A2
-2 sign A2
-3 4 or 5 a2
-4 sign b2
-5 sign b1
-678 A1
-9AB b1
+
+11101000011 code
+123456789ab position code bit
+
+1   is     A2 input
+2   sign   A2
+3   4 or 5 A2 shift
+4   sign   B2
+5   sign   B1
+678 shift  A1
+9ab shift  B1
+
+           A, B sum adder inputs
+-(0+2)-5:  0, 2, 5 shift before adders
