@@ -375,7 +375,7 @@ module board_specific_top
         .bclk        ( sck[0]  ),
         .lrclk       ( ws[0]   ),
         .sd          ( sout1   ),
-        .out_l       ( mic     )
+        .out_l       ( mic     ),
         .out_r       (         )
     );
 
