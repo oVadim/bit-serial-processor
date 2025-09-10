@@ -30,10 +30,12 @@ module i2s_ser
     input                            clk,
     input                            bclk,
     input                            lrclk,
-    input              [w_ser - 1:0] in,
+    input              [w_ser - 1:0] in_l,
+    input              [w_ser - 1:0] in_r,
     output                           sd
 );
 
+    logic              [w_ser - 1:0] in;
     logic [w_ser-1+16*align_right:0] shift = '0;
     logic                            start = '0;
     logic                            lrclk_prev;
@@ -50,6 +52,10 @@ module i2s_ser
             else
                 start <= 1'b0;
             if (offset_by_one_cycle ? start : lrclk_prev ^ lrclk) begin
+                if (lrclk)
+                    in <= in_l;
+                else
+                    in <= in_r;
                 if ((in[w_ser - 2] ^ in[w_ser - 1]) && loud)
                     shift <= {in[w_ser - 1], {(w_ser - 1){~in[w_ser - 1]}}};
                 else

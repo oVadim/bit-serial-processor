@@ -367,8 +367,7 @@ module board_specific_top
 
     i2s_des
     # (
-        .w_des       ( 6'd24   ),
-        .stereo      ( 1'b1    )
+        .w_des       ( 6'd24   )
    )
     i_i2s_des
     (
@@ -376,7 +375,8 @@ module board_specific_top
         .bclk        ( sck[0]  ),
         .lrclk       ( ws[0]   ),
         .sd          ( sout1   ),
-        .out         ( mic     )
+        .out_l       ( mic     )
+        .out_r       (         )
     );
 
     //------------------------------------------------------------------------
@@ -409,14 +409,16 @@ module board_specific_top
     # (
         .w_ser       ( 6'd16   ),
         .align_right         ( 1'b0 ),
-        .offset_by_one_cycle ( 1'b1 )
+        .offset_by_one_cycle ( 1'b1 ),
+        .loud                ( 1'b0 )
     )
     i_i2s_ser
     (
         .clk         ( lab_clk ),
         .bclk        ( sck[0]  ),
         .lrclk       ( ws[0]   ),
-        .in          ( sound   ),
+        .in_l        ( sound   ),
+        .in_r        ( sound   ),
         .sd          ( GPIO_1[6] )
     );
 
@@ -434,7 +436,8 @@ module board_specific_top
         .clk         ( lab_clk ),
         .bclk        ( sck[0]  ),
         .lrclk       ( ws[0]   ),
-        .in          ( sound   ),
+        .in_l        ( sound   ),
+        .in_r        ( sound   ),
         .sd          ( HP_DIN  )
     );
 

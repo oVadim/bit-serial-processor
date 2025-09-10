@@ -213,8 +213,7 @@ module tb;
 
     i2s_des
     # (
-        .w_des       ( 6'd24   ),
-        .stereo      ( 1'b1    )
+        .w_des       ( 6'd24   )
     )
     i_i2s_des
     (
@@ -222,7 +221,8 @@ module tb;
         .bclk        ( bclk1   ),
         .lrclk       ( lrclk1  ),
         .sd          ( c       ),
-        .out         (         )
+        .out_l       (         ),
+        .out_r       (         )
     );
 
     //------------------------------------------------------------------------
@@ -236,7 +236,8 @@ module tb;
         .clk         ( clk     ),
         .bclk        ( bclk1   ),
         .lrclk       ( lrclk1  ),
-        .in          ( sound   ),
+        .in_l        ( sound   ),
+        .in_r        ( sound   ),
         .sd          (         )
     );
 
