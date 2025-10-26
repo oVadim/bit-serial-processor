@@ -1,6 +1,7 @@
 module delay
 # (
-    parameter                           max_delay = 1
+    parameter                           w_delay   = 32,
+                                        max_delay = 1
 )
 (
     input                               clk,
@@ -11,26 +12,32 @@ module delay
     output logic                        out
 );
 
-    localparam W_OUT_SER = 32;
-
     logic [$clog2(max_delay + 1) - 1:0] delay_buf = '0;
-    logic [W_OUT_SER * max_delay - 1:0] delay_reg = '0;
+    logic   [w_delay * max_delay - 1:0] delay_reg = '0;
     logic                               lrclk_prev;
     logic                               bclk_prev;
     logic                               out_reg   = '0;
+    logic                         [1:0] start     = '0;
 
     assign out = delay_buf ? delay_buf > max_delay ? 1'b0 : out_reg : in;
 
     always_ff @(posedge clk) begin
-        bclk_prev     <= bclk;
-        if (bclk_prev && !bclk) begin   // Play bit
-            lrclk_prev    <= lrclk;
-            out_reg       <= delay_reg[W_OUT_SER * delay_buf - 1];
-            if (lrclk_prev ^ lrclk)     // lrclk change
+        bclk_prev <= bclk;
+        if (bclk_prev && !bclk) begin      // Play bit
+            lrclk_prev <= lrclk;
+            out_reg <= delay_reg[w_delay * delay_buf - 1];
+            if (lrclk_prev ^ lrclk)        // lrclk change
+                start <= 2'b1;
+            else if (start == 2'b1)
+                start <= start + 1'b1;     // Offset counter for I2S
+            else
+                start <= 2'b0;
+        end
+        else if (!bclk_prev && bclk) begin // Record bit
+            delay_reg <= {delay_reg[w_delay * max_delay - 2:0], in};
+            if (start == 2'd2)             // Offset by one cycle for I2S
                 delay_buf <= delay;
         end
-        else if (!bclk_prev && bclk)    // Record bit
-            delay_reg     <= {delay_reg[W_OUT_SER * max_delay - 2:0], in};
     end
 
 endmodule

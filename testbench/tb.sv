@@ -147,7 +147,8 @@ module tb;
 
     //------------------------------------------------------------------------
 
-    wire a, b, c;
+    wire a, b, c, d;
+    logic [4:0] counter;
 
     sum
     # (
@@ -158,12 +159,59 @@ module tb;
         .bclk        ( bclk   ),
         .clk         ( clk    ),
         .lrclk       ( lrclk  ),
-        .in_a        ( sdata  ),
+        .in_a        ( sdata | d ),
         .in_b        ( sdata2 ),
         .minus_a     ( 1'b0   ),
         .minus_b     ( 1'b0   ),
         .out         ( a      ),
         .out_p       (        )
+    );
+
+    delay
+    # (
+        .w_delay     ( 16       ),
+        .max_delay   ( 1'b1     )
+    )
+    i_delay
+    (
+        .bclk        ( bclk     ),
+        .clk         ( clk      ),
+        .lrclk       ( lrclk    ),
+        .delay       ( 1'b1     ),
+        .in          ( sdata    ),
+        .out         ( d        )
+    );
+
+    counter
+    i_counter
+    (
+        .clk         ( clk     ),
+        .bclk        ( bclk    ),
+        .lrclk       ( lrclk   ),
+        .counter     ( counter )
+    );
+
+    ntohl i_ntohl
+    (
+        .clk         ( clk     ),
+        .bclk        ( bclk    ),
+        .counter     ( counter ),
+        .in          ( a       ),
+        .out         (         )
+    );
+
+    rotr
+    # (
+        .w_rotr      ( 6'd32   ),
+        .rot         ( 5'd8    )
+    )
+    i_rotr
+    (
+        .clk         ( clk     ),
+        .bclk        ( bclk    ),
+        .counter     ( counter ),
+        .in          ( a       ),
+        .out         (         )
     );
 
     shift
@@ -178,6 +226,20 @@ module tb;
         .shift       ( 4'd8   ),
         .in          ( a      ),
         .out         ( b      )
+    );
+
+    summ
+    # (
+        .w_sum       ( 6'd32    )
+    )
+    i_summ_1
+    (
+        .bclk        ( bclk     ),
+        .clk         ( clk      ),
+        .counter     ( counter  ),
+        .in_a        ( a        ),
+        .in_b        ( b        ),
+        .out         (          )
     );
 
     mixer
@@ -213,7 +275,8 @@ module tb;
 
     i2s_des
     # (
-        .w_des       ( 6'd24   )
+        .w_des       ( 6'd24   ),
+        .stereo      ( 1'b1    )
     )
     i_i2s_des
     (
@@ -221,8 +284,7 @@ module tb;
         .bclk        ( bclk1   ),
         .lrclk       ( lrclk1  ),
         .sd          ( c       ),
-        .out_l       (         ),
-        .out_r       (         )
+        .out         (         )
     );
 
     //------------------------------------------------------------------------
@@ -236,8 +298,7 @@ module tb;
         .clk         ( clk     ),
         .bclk        ( bclk1   ),
         .lrclk       ( lrclk1  ),
-        .in_l        ( sound   ),
-        .in_r        ( sound   ),
+        .in          ( sound   ),
         .sd          (         )
     );
 
