@@ -8,14 +8,14 @@ module ntohl
 );
 
     logic                        bclk_prev;
-    logic                 [31:0] shift_reg = '0;
+    logic                 [31:0] shift_reg;
 
     always_ff @(posedge clk) begin
         bclk_prev <= bclk;
-        if (bclk_prev && !bclk) begin      // Play bit
+        if (bclk_prev && !bclk) begin          // Play bit
             out <= shift_reg[31];
         end
-        else if (!bclk_prev && bclk) begin // Record bit
+        else if (!bclk_prev && bclk) begin     // Record bit
             if (counter < 8)
                 shift_reg <= {shift_reg[30:0], in};
             else if (counter < 16)

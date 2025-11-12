@@ -12,14 +12,14 @@ module rotr
 );
 
     logic                        bclk_prev;
-    logic         [w_rotr - 1:0] shift_reg = '0;
+    logic         [w_rotr - 1:0] shift_reg;
 
     always_ff @(posedge clk) begin
         bclk_prev <= bclk;
-        if (bclk_prev && !bclk) begin      // Play bit
+        if (bclk_prev && !bclk) begin          // Play bit
             out <= shift_reg[w_rotr - 1];
         end
-        else if (!bclk_prev && bclk) begin // Record bit
+        else if (!bclk_prev && bclk) begin     // Record bit
             if (counter < w_rotr - rot)
                 shift_reg <= {shift_reg[w_rotr - 2:0], in};
             else

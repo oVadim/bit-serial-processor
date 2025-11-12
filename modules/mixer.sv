@@ -1,21 +1,18 @@
 module mixer
 # (
-    parameter                        w_mixer = 32
+    parameter                    w_mixer = 32
 )
 (
-    input                            clk,
-    input                            bclk,
-    input                            lrclk,
-    input                     [ 6:0] level,
-    input                            in,
-    output logic                     out,
-    output logic     [w_mixer - 1:0] out_p
+    input                        clk,
+    input                        bclk,
+    input                        lrclk,
+    input                 [ 6:0] level,
+    input                        in,
+    output logic                 out,
+    output logic [w_mixer - 1:0] out_p
 );
 
-    logic                     [10:0] mix;
-    logic                            lrclk_prev;
-    logic                            bclk_prev;
-    logic                            out_reg;
+    logic                 [10:0] mix;
 
     wire a, b, c, d, e;
 

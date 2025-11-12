@@ -11,12 +11,12 @@ module shift
     output logic                        out
 );
 
-    logic [$clog2(max_shift + 1) - 1:0] shift_buf = '0;
-    logic             [max_shift - 1:0] shift_reg = '0;
+    logic [$clog2(max_shift + 1) - 1:0] shift_buf;
+    logic             [max_shift - 1:0] shift_reg;
     logic                               lrclk_prev;
     logic                               bclk_prev;
-    logic                               out_reg   = '0;
-    logic                         [1:0] start     = '0;
+    logic                               out_reg;
+    logic                         [1:0] start;
 
     assign out = (shift_buf > max_shift) ? 1'b0 :
                           (start == 2'd2 ? in : (shift_buf ? out_reg : in));

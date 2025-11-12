@@ -6,26 +6,26 @@ module summ
     input                        clk,
     input                        bclk,
     input  [$clog2(w_sum) - 1:0] counter,
-    input                        in_a,             // Input a bit
-    input                        in_b,             // Input b bit
-    output logic                 out               // Output bit
+    input                        in_a,         // Input a bit
+    input                        in_b,         // Input b bit
+    output logic                 out           // Output bit
 );
 
-    logic          [w_sum - 1:0] sum         = '0; // Sum bits
-    logic          [w_sum - 2:0] carry       = '0; // Сarry bits
-    logic          [w_sum - 2:0] carry_ready = '0; // Сarry distribution area
+    logic          [w_sum - 1:0] sum;          // Sum bits
+    logic          [w_sum - 2:0] carry;        // Сarry bits
+    logic          [w_sum - 2:0] carry_ready;  // Сarry distribution area
     logic                        lrclk_prev;
     logic                        bclk_prev;
 
     always_ff @(posedge clk) begin
         bclk_prev <= bclk;
-        if (bclk_prev && !bclk) begin              // Play bit
+        if (bclk_prev && !bclk) begin          // Play bit
             if (counter < w_sum - 1)
                 out <= sum[w_sum - 1] ^ ((counter == w_sum - 2) ? 1'b0 : carry[w_sum - 2]);
             else
                 carry_ready <= '0;
         end
-        else if (!bclk_prev && bclk) begin         // Record bit
+        else if (!bclk_prev && bclk) begin     // Record bit
             sum <= {sum[w_sum - 2:0], in_a ^ in_b};
             if (counter == w_sum - 1)
                 carry <= carry << 1;

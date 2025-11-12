@@ -11,8 +11,8 @@ module i2s_des
     output logic  [w_des - 1:0] out
 );
 
-    logic         [w_des - 1:0] shift   = '0;
-    logic [$clog2(w_des + 1):0] counter = '0;
+    logic         [w_des - 1:0] shift;
+    logic [$clog2(w_des + 1):0] counter;
     logic                       lrclk_prev;
     logic                       bclk_prev;
 

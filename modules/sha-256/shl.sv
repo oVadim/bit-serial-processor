@@ -22,8 +22,10 @@ module shl
         else if (!bclk_prev && bclk) begin // Record bit
             if (counter < shl)
                 shift_reg <= {shift_reg[w_shl - 2:0], in};
+            else if (shl == w_shl - 1)
+                shift_reg[w_shl - 1] <= in;
             else
-                shift_reg[w_shl - 1:shl - 1] <= {shift_reg[w_shl - 2:shl - 1], in};
+                shift_reg[w_shl - 1:shl] <= {shift_reg[w_shl - 2:shl], in};
         end
     end
 

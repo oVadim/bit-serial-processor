@@ -34,8 +34,8 @@ module i2s_ser
     output                           sd
 );
 
-    logic [w_ser-1+16*align_right:0] shift = '0;
-    logic                            start = '0;
+    logic [w_ser-1+16*align_right:0] shift;
+    logic                            start;
     logic                            lrclk_prev;
     logic                            bclk_prev;
 

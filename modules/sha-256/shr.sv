@@ -1,7 +1,7 @@
 module shr
 # (
     parameter                   w_shr = 32,
-                                shr    = 0
+                                shr   = 0
 )
 (
     input                       clk,
@@ -12,14 +12,14 @@ module shr
 );
 
     logic                       bclk_prev;
-    logic         [w_shr - 1:0] shift_reg = '0;
+    logic         [w_shr - 1:0] shift_reg;
 
     always_ff @(posedge clk) begin
         bclk_prev <= bclk;
-        if (bclk_prev && !bclk) begin      // Play bit
+        if (bclk_prev && !bclk) begin          // Play bit
             out <= shift_reg[w_shr - 1];
         end
-        else if (!bclk_prev && bclk) begin // Record bit
+        else if (!bclk_prev && bclk) begin     // Record bit
             if (counter > w_shr - shr - 1)
                 shift_reg[w_shr - 1:w_shr - shr] <= shift_reg[w_shr - 1:w_shr - shr] << 1;
             else

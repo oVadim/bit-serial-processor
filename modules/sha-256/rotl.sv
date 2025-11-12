@@ -22,8 +22,10 @@ module rotl
         else if (!bclk_prev && bclk) begin // Record bit
             if (counter < rot)
                 shift_reg <= {shift_reg[w_rotl - 2:0], in};
+            else if (rot == w_rotl - 1)
+                shift_reg[w_rotl - 1] <= in;
             else
-                shift_reg[w_rotl - 1:rot - 1] <= {shift_reg[w_rotl - 2:rot - 1], in};
+                shift_reg[w_rotl - 1:rot] <= {shift_reg[w_rotl - 2:rot], in};
         end
     end
 
